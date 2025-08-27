@@ -1,0 +1,9 @@
+---
+format: gfm
+engine: knitr
+---
+
+```{bash}
+make run -B
+```
+
