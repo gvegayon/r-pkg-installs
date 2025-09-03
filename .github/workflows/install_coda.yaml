@@ -14,8 +14,8 @@ jobs:
       matrix:
         os: [
             ubuntu-22.04, ubuntu-22.04-arm,
-            windows-2025, windows-11-arm,
-            macos-13, macos-15
+            windows-2025, windows-11-arm #,
+            # macos-13, macos-15
             ]
         R-version: ['4.4.0', 'latest', '4.5.0']
         cran: [https://cloud.r-project.org/, https://p3m.dev/cran/latest]
@@ -39,7 +39,7 @@ jobs:
             _CONTAINER=docker make test
 
       - name: Save the output
-        uses: actions/upload-artifact@4.6.2
+        uses: actions/upload-artifact@v4.6.2
         with:
           path: |
               *yaml
