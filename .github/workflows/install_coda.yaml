@@ -18,21 +18,24 @@ jobs:
       fail-fast: false
       matrix:
         os: [
-            ubuntu-22.04 #, ubuntu-22.04-arm #,
+            ubuntu-22.04, ubuntu-22.04-arm #,
             # I can't figure out windows or macos yet
             # windows-2025 , windows-11-arm ,
             # macos-13, macos-15
             ]
         R-version: ['4.4.0', 'latest'] # ['4.4.0', 'latest', '4.5.0']
-        cran: [cloud, p3m]
+        cran: 
+          - {label: cloud, url: https://cloud.r-project.org/}
+          - {label: p3m, url: https://p3m.dev/cran/latest}
+          - {label: p3m-old, url: https://p3m.dev/cran/2025-08-30}
         use_pak: [yes, no]
 
     runs-on: ${{ matrix.os }}
     container: rocker/r-ver:${{ matrix.R-version }}
     env:
         _USE_PAK: ${{ matrix.use_pak }}
-        _CRAN: ${{ matrix.cran }}
         _IMAGE: rocker/r-ver:${{ matrix.R-version }}
+        _CRAN: ${{ matrix.cran.url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -46,13 +49,12 @@ jobs:
         run: |
           Rscript -e 'source("install.R")'
 
-
       - name: Save the output
         uses: actions/upload-artifact@v4.6.2
         with:
           path: |
               *yaml
-          name: coda-install-${{ matrix.R-version }}-${{ matrix.os }}-${{ matrix.cran }}-${{ matrix.use_pak }}
+          name: coda-install-${{ matrix.R-version }}-${{ matrix.os }}-${{ matrix.cran.label }}-${{ matrix.use_pak }}
     
   combine:
     runs-on: ubuntu-latest

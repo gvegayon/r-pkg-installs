@@ -1,14 +1,16 @@
 # Getting whether to use pak or not
 use_pak <- Sys.getenv("_USE_PAK", "no")
 cran    <- Sys.getenv("_CRAN", "https://cloud.r-project.org/")
+r_pkg   <- Sys.getenv("_R_PKG", "")
 
-if (cran == "p3m") {
-  options(repos = c(CRAN = "https://p3m.dev/cran/latest"))
-} else if (cran == "cloud") {
-  options(repos = c(CRAN = "https://cloud.r-project.org/"))
-} else {
-  options(repos = c(CRAN = cran))
+if (r_pkg == "") {
+  stop(
+    "Please set the _R_PKG environment variable to the package ",
+    "you want to install."
+  )
 }
+
+options(repos = c(CRAN = cran))
 
 # Check the version of the CRAN repo
 message("R version : ", getRversion())
@@ -54,12 +56,12 @@ if (use_pak == "yes") {
     })
   }
   install_time <- eval_with_cran({
-    pak::pkg_install("coda")
+    pak::pkg_install(r_pkg)
   }) |>
     system.time()
 } else {
   install_time <- eval_with_cran({
-    install.packages("coda")
+    install.packages(r_pkg)
   }) |>
     system.time()
 }
@@ -70,7 +72,7 @@ message("Total install time: ", install_time["elapsed"], " seconds.")
 # - What is the installed version
 # - Whether it was installed from source or from binaries
 # - What is the repository from which it was installed
-installed_info <- packageDescription("coda")
+installed_info <- packageDescription(r_pkg)
 
 message("Installed version: ", installed_info$Version)
 message("Installed from: ", ifelse(installed_info$Built == "", "source", "binary"))
@@ -81,8 +83,9 @@ fn <- tempfile(fileext = ".yaml")
 
 writeLines(
   c(
+    sprintf("r_pkg: %s", r_pkg),
     sprintf("use_pak: %s", use_pak),
-    sprintf("cran: %s", cran),
+    sprintf("cran: %s", getOption("repos")["CRAN"]),
     sprintf("installed_version: %s", installed_info$Version),
     sprintf("installed_from: %s", ifelse(installed_info$Built == "", "source", "binary")),
     sprintf("installed_repository: %s", installed_info$Repository),
