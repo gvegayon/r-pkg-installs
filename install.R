@@ -29,8 +29,11 @@ eval_with_cran <- function(expr) {
 
   c(
     sprintf("options(repos = c(CRAN = '%s'))", cran),
+    sprintf("r_pkg <- '%s'", r_pkg),
     expr
   ) |> writeLines(con = temp_script)
+
+  message(readLines(temp_script))
 
   system(
     sprintf(

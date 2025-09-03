@@ -1,3 +1,7 @@
+ifndef _R_PKG
+_R_PKG := data.table
+endif
+
 ifndef _VERSION
 _VERSION := latest
 endif
@@ -7,7 +11,7 @@ _USE_PAK := no
 endif
 
 ifndef _CRAN
-_CRAN := cloud
+_CRAN := https://cloud.r-project.org/
 endif
 
 ifndef _CONTAINER
@@ -32,6 +36,7 @@ run:
 	$(_CONTAINER) run -i --rm \
 		--mount type=bind,source="$(_PWD)",target=$(_WORKSPACE) \
 		--workdir $(_WORKSPACE) \
+		--env _R_PKG=$(_R_PKG) \
 		--env _USE_PAK=$(_USE_PAK) \
 		--env _CRAN=$(_CRAN) \
 		--env _IMAGE=$(_IMAGE) \
@@ -40,6 +45,7 @@ run:
 test:
 	$(_CONTAINER) run --rm \
 		--mount type=bind,source="$(_PWD)",target=$(_WORKSPACE) \
+		--env _R_PKG=$(_R_PKG) \
 		--env _USE_PAK=$(_USE_PAK) \
 		--env _CRAN=$(_CRAN) \
 		--env _IMAGE=$(_IMAGE) \
