@@ -41,7 +41,7 @@ jobs:
         if: ${{ startsWith( matrix.os, 'macos' ) }}
         uses: docker/setup-docker-action@v4.3.0
 
-      - name: Installing conda
+      - name: Installing coda
         shell: bash
         run: |
           Rscript -e 'source("install.R")'
@@ -55,7 +55,8 @@ jobs:
           name: coda-install-${{ matrix.R-version }}-${{ matrix.os }}-${{ matrix.cran }}-${{ matrix.use_pak }}
     
   combine:
-    runs-on: rocker/r-ver:latest
+    runs-on: ubuntu-latest
+    container: rocker/r-ver:latest
     needs: install_coda
     if: success() || failure()
     steps:
