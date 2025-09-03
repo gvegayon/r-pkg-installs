@@ -83,16 +83,32 @@ jobs:
             as.data.frame(t(unlist(y)), stringsAsFactors = FALSE)
           }))
 
-          fn <- file.path(
-            "data",
-            sprintf("%s.csv", Sys.time())
-          )
+          fn <- file.path(sprintf("%s.csv", Sys.time()))
 
           write.csv(out, file = fn, row.names = FALSE)
+    
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: install-file
+          path: |
+            *.csv
 
-      - name: Saving the summary as a commit
+  commit:
+    runs-on: ubuntu-latest
+    needs: combine
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v5.0.0
+        with:
+          name: install-file
+
+      - name: Commit changes
         run: |
-          apt-get update && apt-get install git -y --no-install-recommends
+          mv *.csv data/
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add data/*.csv || echo "Nothing to add"
