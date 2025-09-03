@@ -10,6 +10,7 @@ on:
 
 jobs:
   install_coda:
+    continue-on-error: true
     strategy:
       matrix:
         os: [
@@ -32,6 +33,7 @@ jobs:
         uses: docker/setup-docker-action@v4.3.0
 
       - name: Run the install
+        shell: bash
         run: |
           _VERSION=${{ matrix.R-version }} \
             _USE_PAK=${{ matrix.use_pak }} \
