@@ -27,12 +27,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-
       - name: Install docker on Mac
         if: ${{ startsWith( matrix.os, 'macos' ) }}
         uses: docker/setup-docker-action@v4.3.0
 
-      - name: Run the install
+      - name: Installing conda
         shell: bash
         run: |
           _VERSION=${{ matrix.R-version }} \
@@ -40,11 +39,37 @@ jobs:
             _CRAN=${{ matrix.cran }} \
             _CONTAINER=docker make test
 
+
       - name: Save the output
         uses: actions/upload-artifact@v4.6.2
         with:
           path: |
               *yaml
           name: coda-install-${{ matrix.R-version }}-${{ matrix.os }}-${{ matrix.cran }}-${{ matrix.use_pak }}
+    
+  combine:
+    runs-on: rocker/tidiverse:latest
+    needs: install_coda
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v5.0.0
 
-  
+      - name: Combine all YAML files
+        shell: Rscript {0}
+        run: |
+          
+          library(yaml)
+          
+          files <- list.files(pattern = "*.yaml")
+          out <- do.call(rbind, lapply(files, function(f) {
+            y <- yaml.load_file(f)
+            as.data.frame(t(unlist(y)), stringsAsFactors = FALSE)
+          }))
+          
+          write.csv(out, file = "coda-install-summary.csv", row.names = FALSE)
+
+      - name: Upload summary
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: coda-install-summary
+          path: coda-install-summary.csv

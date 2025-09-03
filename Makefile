@@ -14,6 +14,15 @@ ifndef _CONTAINER
 _CONTAINER := docker
 endif
 
+ifeq ($(OS), Windows_NT)
+	_WORKSPACE := C:/workspace
+	_PWD := $(shell cd)
+else
+	_WORKSPACE := /workspace
+	_PWD := $(shell pwd)
+endif
+
+
 _IMAGE := rocker/r-ver:$(_VERSION)
 
 help:
@@ -22,8 +31,8 @@ help:
 
 run:
 	$(_CONTAINER) run -i --rm \
-		--mount type=bind,source="$(shell pwd)",target=/workspace \
-		--workdir /workspace \
+		--mount type=bind,source="$(_PWD)",target=$(_WORKSPACE) \
+		--workdir $(_WORKSPACE) \
 		--env _USE_PAK=$(_USE_PAK) \
 		--env _CRAN=$(_CRAN) \
 		--env _IMAGE=$(_IMAGE) \
@@ -31,11 +40,11 @@ run:
 
 test:
 	$(_CONTAINER) run --rm \
-		--mount type=bind,source="$(shell pwd)",target=/workspace \
+		--mount type=bind,source="$(_PWD)",target=$(_WORKSPACE) \
 		--env _USE_PAK=$(_USE_PAK) \
 		--env _CRAN=$(_CRAN) \
 		--env _IMAGE=$(_IMAGE) \
-		--workdir /workspace \
+		--workdir $(_WORKSPACE) \
 		$(_IMAGE) Rscript -e 'source("install.R")'
 
 .PHONY: help run test

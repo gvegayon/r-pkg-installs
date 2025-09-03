@@ -90,7 +90,8 @@ writeLines(
     sprintf("image: %s", Sys.getenv("_IMAGE", "")),
     sprintf("r_version: %s", getRversion()),
     sprintf("system: %s", R.version$system),
-    sprintf("architecture: %s", R.version$arch)
+    sprintf("architecture: %s", R.version$arch),
+    sprintf("timestamp: %s", Sys.time())
   ),
   con = fn
 )
