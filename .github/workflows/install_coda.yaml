@@ -19,7 +19,7 @@ jobs:
             # macos-13, macos-15
             ]
         R-version: ['4.4.0', 'latest', '4.5.0']
-        cran: [https://cloud.r-project.org/, https://p3m.dev/cran/latest]
+        cran: [cloud, p3m]
         use_pak: [yes, no]
 
     runs-on: ${{ matrix.os }}
@@ -29,7 +29,7 @@ jobs:
 
 
       - name: Install docker on Mac
-        if: ${{ startsWith( matrix.os, 'macos-15' ) }}
+        if: ${{ startsWith( matrix.os, 'macos' ) }}
         uses: docker/setup-docker-action@v4.3.0
 
       - name: Run the install

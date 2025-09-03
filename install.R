@@ -2,7 +2,11 @@
 use_pak <- Sys.getenv("_USE_PAK", "no")
 cran    <- Sys.getenv("_CRAN", "https://cloud.r-project.org/")
 
-if (cran != "") {
+if (cran == "p3m") {
+  options(repos = c(CRAN = "https://p3m.dev/cran/latest"))
+} else if (cran == "cloud") {
+  options(repos = c(CRAN = "https://cloud.r-project.org/"))
+} else {
   options(repos = c(CRAN = cran))
 }
 
@@ -19,6 +23,7 @@ eval_with_cran <- function(expr) {
   
   expr <- deparse(substitute(expr)) |> as.character()
   temp_script <- tempfile(fileext = ".R")
+  cran <- getOption("repos")["CRAN"]
 
   c(
     sprintf("options(repos = c(CRAN = '%s'))", cran),
