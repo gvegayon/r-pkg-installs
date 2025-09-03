@@ -36,6 +36,7 @@ jobs:
         _USE_PAK: ${{ matrix.use_pak }}
         _IMAGE: rocker/r-ver:${{ matrix.R-version }}
         _CRAN: ${{ matrix.cran.url }}
+        _R_PKG: data.table
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
