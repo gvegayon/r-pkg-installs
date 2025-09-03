@@ -14,12 +14,13 @@ permissions:
 jobs:
 
   install_coda:
-    continue-on-error: true
     strategy:
+      fail-fast: false
       matrix:
         os: [
-            ubuntu-22.04, ubuntu-22.04-arm,
-            windows-2025 # , windows-11-arm ,
+            ubuntu-22.04, ubuntu-22.04-arm #,
+            # I can't figure out windows or macos yet
+            # windows-2025 , windows-11-arm ,
             # macos-13, macos-15
             ]
         R-version: ['4.4.0', 'latest', '4.5.0']
@@ -54,6 +55,7 @@ jobs:
   combine:
     runs-on: rocker/r-ver:latest
     needs: install_coda
+    if: success() || failure()
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v5.0.0
