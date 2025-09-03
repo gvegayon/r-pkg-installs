@@ -44,7 +44,7 @@ jobs:
       - name: Installing conda
         shell: bash
         run: |
-          make test
+          Rscript -e 'source("install.R")'
 
 
       - name: Save the output
