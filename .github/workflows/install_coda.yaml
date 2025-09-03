@@ -84,7 +84,7 @@ jobs:
           }))
 
           fn <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
-          fn <- paste0("%s.csv", fn)
+          fn <- paste0(fn, ".csv")
 
           write.csv(out, file = fn, row.names = FALSE)
     
