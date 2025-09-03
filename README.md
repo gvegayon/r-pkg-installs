@@ -1,4 +1,6 @@
 
+[![Install an R package](https://github.com/gvegayon/r-pkg-installs/actions/workflows/install_an_r_package.yaml/badge.svg)](https://github.com/gvegayon/r-pkg-installs/actions/workflows/install_an_r_package.yaml)
+
 # How R packages are installed
 
 This repository contains a workflow that analyzes different strategies for installing R packages. Particularly, it compares using `install.packages()` vs `pak::pkg_install()` in different combinations of CRAN versions as well as architectures. The main workflow [here](./.github/workflows/install_an_r_package.yaml) runs the installs and saves the output as csv files under [data](./data).
