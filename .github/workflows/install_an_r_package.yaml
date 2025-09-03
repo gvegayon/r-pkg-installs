@@ -1,4 +1,4 @@
-name: Install Coda in R
+name: Install an R package
 
 on:
   push:

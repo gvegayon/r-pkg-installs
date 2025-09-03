@@ -70,6 +70,11 @@ if (use_pak == "yes") {
   })
 }
 
+if (verbose != "no") {
+  message("------------------ Installation output ----------------------")
+  message(paste(install_output, collapse = "\n"))
+}
+
 message("Total install time: ", install_time["elapsed"], " seconds.")
 
 # Retrieving information about the installed package:
@@ -81,11 +86,6 @@ installed_info <- packageDescription(r_pkg)
 message("Installed version: ", installed_info$Version)
 message("Installed from: ", ifelse(installed_info$Built == "", "source", "binary"))
 message("Repository: ", installed_info$Repository)
-
-if (verbose != "no") {
-  message("------------------ Installation output ----------------------")
-  message(paste(install_output, collapse = "\n"))
-}
 
 # Creating a list to be saved as a yaml file
 fn <- tempfile(fileext = ".yaml")
