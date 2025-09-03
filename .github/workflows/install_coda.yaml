@@ -66,6 +66,9 @@ jobs:
 
       - name: Download artifacts
         uses: actions/download-artifact@v5.0.0
+        with:
+            merge-multiple: true
+            path: .
 
       - name: Dependencies
         run: |
