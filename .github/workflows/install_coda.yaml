@@ -83,7 +83,8 @@ jobs:
             as.data.frame(t(unlist(y)), stringsAsFactors = FALSE)
           }))
 
-          fn <- file.path(sprintf("%s.csv", Sys.time()))
+          fn <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
+          fn <- paste0("%s.csv", fn)
 
           write.csv(out, file = fn, row.names = FALSE)
     
