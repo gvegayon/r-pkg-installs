@@ -1,0 +1,48 @@
+name: Install Coda in R
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  install_coda:
+    strategy:
+      matrix:
+        os: [
+            ubuntu-22.04, ubuntu-22.04-arm,
+            windows-2025, windows-11-arm,
+            macos-13, macos-15
+            ]
+        R-version: ['4.4.0', 'latest', '4.5.0']
+        cran: [https://cloud.r-project.org/, https://p3m.dev/cran/latest]
+        use_pak: [yes, no]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+      - name: Install docker on Mac
+        if: ${{ startsWith( matrix.os, 'macos-15' ) }}
+        uses: docker/setup-docker-action@v4.3.0
+
+      - name: Run the install
+        run: |
+          _VERSION=${{ matrix.R-version }} \
+            _USE_PAK=${{ matrix.use_pak }} \
+            _CRAN=${{ matrix.cran }} \
+            _CONTAINER=docker make test
+
+      - name: Save the output
+        uses: actions/upload-artifact@4.6.2
+        with:
+          path: |
+              *yaml
+          name: coda-install-${{ matrix.R-version }}-${{ matrix.os }}-${{ matrix.cran }}-${{ matrix.use_pak }}
+
+  

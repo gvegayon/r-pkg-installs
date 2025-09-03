@@ -10,6 +10,10 @@ ifndef _CRAN
 _CRAN := https://p3m.dev/cran/latest
 endif
 
+ifndef _CONTAINER
+_CONTAINER := docker
+endif
+
 _IMAGE := rocker/r-ver:$(_VERSION)
 
 help:
@@ -17,7 +21,7 @@ help:
 	@echo "Usage: make run"
 
 run:
-	podman run -i --rm \
+	$(_CONTAINER) run -i --rm \
 		--mount type=bind,source="$(shell pwd)",target=/mnt \
 		--workdir /mnt \
 		--env _USE_PAK=$(_USE_PAK) \
@@ -26,10 +30,12 @@ run:
 		$(_IMAGE) bash
 
 test:
-	podman run --rm \
+	$(_CONTAINER) run --rm \
 		--mount type=bind,source="$(shell pwd)",target=/mnt \
 		--env _USE_PAK=$(_USE_PAK) \
 		--env _CRAN=$(_CRAN) \
 		--env _IMAGE=$(_IMAGE) \
 		--workdir /mnt \
 		$(_IMAGE) Rscript -e 'source("install.R")'
+
+.PHONY: help run test
