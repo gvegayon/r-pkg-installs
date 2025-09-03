@@ -8,14 +8,18 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
+
   install_coda:
     continue-on-error: true
     strategy:
       matrix:
         os: [
             ubuntu-22.04, ubuntu-22.04-arm,
-            windows-2025, windows-11-arm #,
+            windows-2025 # , windows-11-arm ,
             # macos-13, macos-15
             ]
         R-version: ['4.4.0', 'latest', '4.5.0']
@@ -48,11 +52,15 @@ jobs:
           name: coda-install-${{ matrix.R-version }}-${{ matrix.os }}-${{ matrix.cran }}-${{ matrix.use_pak }}
     
   combine:
-    runs-on: rocker/tidiverse:latest
+    runs-on: rocker/r-ver:latest
     needs: install_coda
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v5.0.0
+
+      - name: Dependencies
+        run: |
+          install2.r --error yaml
 
       - name: Combine all YAML files
         shell: Rscript {0}
@@ -65,11 +73,18 @@ jobs:
             y <- yaml.load_file(f)
             as.data.frame(t(unlist(y)), stringsAsFactors = FALSE)
           }))
-          
-          write.csv(out, file = "coda-install-summary.csv", row.names = FALSE)
 
-      - name: Upload summary
-        uses: actions/upload-artifact@v4.6.2
-        with:
-          name: coda-install-summary
-          path: coda-install-summary.csv
+          fn <- file.path(
+            "data",
+            sprintf("%s.csv", Sys.time())
+          )
+
+          write.csv(out, file = fn, row.names = FALSE)
+
+      - name: Saving the summary as a commit
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add data/*.csv || echo "Nothing to add"
+          git commit -m "Add coda installation summary" || echo "Nothing to commit"
+          git push || echo "Nothing to push"

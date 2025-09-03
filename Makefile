@@ -16,12 +16,11 @@ endif
 
 ifeq ($(OS), Windows_NT)
 	_WORKSPACE := C:/workspace
-	_PWD := $(shell cd)
 else
 	_WORKSPACE := /workspace
-	_PWD := $(shell pwd)
 endif
 
+_PWD := $(shell pwd)
 
 _IMAGE := rocker/r-ver:$(_VERSION)
 
