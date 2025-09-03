@@ -2,6 +2,7 @@
 use_pak <- Sys.getenv("_USE_PAK", "no")
 cran    <- Sys.getenv("_CRAN", "https://cloud.r-project.org/")
 r_pkg   <- Sys.getenv("_R_PKG", "")
+verbose <- Sys.getenv("_VERBOSE", "no")
 
 if (r_pkg == "") {
   stop(
@@ -33,8 +34,6 @@ eval_with_cran <- function(expr) {
     expr
   ) |> writeLines(con = temp_script)
 
-  message(readLines(temp_script))
-
   system(
     sprintf(
       "R CMD BATCH --vanilla %s %s.out",
@@ -58,15 +57,17 @@ if (use_pak == "yes") {
       )
     })
   }
-  install_time <- eval_with_cran({
-    pak::pkg_install(r_pkg)
-  }) |>
-    system.time()
+  install_time <- system.time({
+    install_output <- eval_with_cran({
+      pak::pkg_install(r_pkg)
+    })
+  })
 } else {
-  install_time <- eval_with_cran({
-    install.packages(r_pkg)
-  }) |>
-    system.time()
+  install_time <- system.time({
+    install_output <- eval_with_cran({
+      install.packages(r_pkg)
+    })
+  })
 }
 
 message("Total install time: ", install_time["elapsed"], " seconds.")
@@ -81,6 +82,11 @@ message("Installed version: ", installed_info$Version)
 message("Installed from: ", ifelse(installed_info$Built == "", "source", "binary"))
 message("Repository: ", installed_info$Repository)
 
+if (verbose != "no") {
+  message("------------------ Installation output ----------------------")
+  message(paste(install_output, collapse = "\n"))
+}
+
 # Creating a list to be saved as a yaml file
 fn <- tempfile(fileext = ".yaml")
 
@@ -90,7 +96,9 @@ writeLines(
     sprintf("use_pak: %s", use_pak),
     sprintf("cran: %s", getOption("repos")["CRAN"]),
     sprintf("installed_version: %s", installed_info$Version),
-    sprintf("installed_from: %s", ifelse(installed_info$Built == "", "source", "binary")),
+    sprintf("installed_from: %s", ifelse(
+      any(grepl("installing [*]source[*]", install_output)), "source", "binary"
+    )),
     sprintf("installed_repository: %s", installed_info$Repository),
     sprintf("install_time: %s", install_time["elapsed"]),
     sprintf("image: %s", Sys.getenv("_IMAGE", "")),

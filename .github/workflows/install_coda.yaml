@@ -26,8 +26,9 @@ jobs:
         R-version: ['4.4.0', 'latest'] # ['4.4.0', 'latest', '4.5.0']
         cran: 
           - {label: cloud, url: https://cloud.r-project.org/}
-          - {label: p3m, url: https://p3m.dev/cran/latest}
-          - {label: p3m-old, url: https://p3m.dev/cran/2025-08-30}
+          - {label: p3m-linux-latest, url: https://p3m.dev/__linux__/jammy/latest}
+          - {label: p3m-linux-source, url: https://p3m.dev/cran/latest}
+          - {label: p3m-linux-old, url: https://p3m.dev/cran/__linux__/jammy/2024-03-31}
         use_pak: [yes, no]
 
     runs-on: ${{ matrix.os }}
@@ -37,6 +38,7 @@ jobs:
         _IMAGE: rocker/r-ver:${{ matrix.R-version }}
         _CRAN: ${{ matrix.cran.url }}
         _R_PKG: data.table
+        _VERBOSE: yes
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

@@ -18,6 +18,10 @@ ifndef _CONTAINER
 _CONTAINER := docker
 endif
 
+ifndef _VERBOSE
+_VERBOSE := no
+endif
+
 ifeq ($(OS), Windows_NT)
 	_WORKSPACE := C:/workspace
 else
@@ -40,6 +44,7 @@ run:
 		--env _USE_PAK=$(_USE_PAK) \
 		--env _CRAN=$(_CRAN) \
 		--env _IMAGE=$(_IMAGE) \
+		--env _VERBOSE=$(_VERBOSE) \
 		$(_IMAGE) bash
 
 test:
@@ -50,6 +55,7 @@ test:
 		--env _CRAN=$(_CRAN) \
 		--env _IMAGE=$(_IMAGE) \
 		--workdir $(_WORKSPACE) \
+		--env _VERBOSE=$(_VERBOSE) \
 		$(_IMAGE) Rscript -e 'source("install.R")'
 
 .PHONY: help run test
