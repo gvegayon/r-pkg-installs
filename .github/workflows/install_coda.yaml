@@ -18,16 +18,21 @@ jobs:
       fail-fast: false
       matrix:
         os: [
-            ubuntu-22.04, ubuntu-22.04-arm #,
+            ubuntu-22.04 #, ubuntu-22.04-arm #,
             # I can't figure out windows or macos yet
             # windows-2025 , windows-11-arm ,
             # macos-13, macos-15
             ]
-        R-version: ['4.4.0', 'latest', '4.5.0']
+        R-version: ['4.4.0', 'latest'] # ['4.4.0', 'latest', '4.5.0']
         cran: [cloud, p3m]
         use_pak: [yes, no]
 
     runs-on: ${{ matrix.os }}
+    container: rocker/r-ver:${{ matrix.R-version }}
+    env:
+        _USE_PAK: ${{ matrix.use_pak }}
+        _CRAN: ${{ matrix.cran }}
+        _IMAGE: rocker/r-ver:${{ matrix.R-version }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -39,10 +44,7 @@ jobs:
       - name: Installing conda
         shell: bash
         run: |
-          _VERSION=${{ matrix.R-version }} \
-            _USE_PAK=${{ matrix.use_pak }} \
-            _CRAN=${{ matrix.cran }} \
-            _CONTAINER=docker make test
+          make test
 
 
       - name: Save the output
