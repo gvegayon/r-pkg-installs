@@ -3,7 +3,7 @@ use_pak  <- Sys.getenv("_USE_PAK", "no")
 cran     <- Sys.getenv("_CRAN", "https://cloud.r-project.org/")
 r_pkg    <- Sys.getenv("_R_PKG", "")
 verbose  <- Sys.getenv("_VERBOSE", "no")
-run_link <- Sys.getenv("_RUN_LINK", "")
+run_link <- Sys.getenv("_RUN_LINK", NA)
 
 # Checking if we need to setup the proper CRAN repo
 # for latest binaries on Linux
@@ -74,20 +74,31 @@ eval_with_cran <- function(expr) {
 # Installing packages
 if (use_pak == "yes") {
   if (!requireNamespace("pak", quietly = TRUE)) {
-    eval_with_cran({
+
+    message("Installing pak...")
+
+    # In linux, we need some extra system dependencies
+    if (R.version$os == "linux-gnu") {
+      stop("pak installation is only supported on Linux")
+      eval_with_cran({
         system("
-        apt-get update && apt-get install -y --no-install-recommends libcurl4-openssl-dev &&
-        install2.r pak
-        ",
-        intern = TRUE
-      )
-    })
+          apt-get update && apt-get install -y --no-install-recommends libcurl4-openssl-dev
+          ",
+          intern = TRUE
+        )
+      })
+    }
+
+    eval_with_cran(system("install2.r pak", intern = TRUE))
+
   }
+  
   install_time <- system.time({
     install_output <- eval_with_cran({
       pak::pkg_install(r_pkg)
     })
   })
+
 } else {
   install_time <- system.time({
     install_output <- eval_with_cran({
@@ -130,9 +141,9 @@ if (!pkg_installed) {
       sprintf("r_pkg: %s", r_pkg),
       sprintf("use_pak: %s", use_pak),
       sprintf("cran: %s", getOption("repos")["CRAN"]),
-      sprintf("installed_version: %s", ""),
-      sprintf("installed_from: %s", ""),
-      sprintf("installed_repository: %s", ""),
+      sprintf("installed_version: %s", NA),
+      sprintf("installed_from: %s", NA),
+      sprintf("installed_repository: %s", NA),
       sprintf("install_time: %s", install_time["elapsed"]),
       sprintf("image: %s", Sys.getenv("_IMAGE", "")),
       sprintf("r_version: %s", getRversion()),
