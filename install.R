@@ -121,7 +121,7 @@ if (use_pak == "yes") {
   installation_type <- ifelse(
       any(
         grepl(
-          paste("^.\\s+Building", r_pkg), install_output)
+          paste("Building", r_pkg), install_output)
       ),
       "source",
       "binary"
