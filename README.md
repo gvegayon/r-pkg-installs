@@ -15,21 +15,21 @@ and saves the output as csv files under [data](./data).
 
 The following table shows the distribution of the installations so far:
 
-|                                                 | binary |
-|:------------------------------------------------|-------:|
-| https://cloud.r-project.org/                    |     24 |
-| https://p3m.dev/cran/**linux**/jammy/2024-03-31 |      6 |
-| https://p3m.dev/cran/**linux**/jammy/latest     |     12 |
-| https://p3m.dev/cran/latest                     |     24 |
+|                                                 | binary | source |
+|:------------------------------------------------|-------:|-------:|
+| https://cloud.r-project.org/                    |      0 |      4 |
+| https://p3m.dev/cran/**linux**/jammy/2024-03-31 |      1 |      0 |
+| https://p3m.dev/cran/**linux**/jammy/latest     |      2 |      0 |
+| https://p3m.dev/cran/latest                     |      0 |      4 |
 
 Using pak::pkg_install()
 
 |                                                 | source |
 |:------------------------------------------------|-------:|
-| https://cloud.r-project.org/                    |     24 |
-| https://p3m.dev/cran/**linux**/jammy/2024-03-31 |     12 |
-| https://p3m.dev/cran/**linux**/jammy/latest     |     24 |
-| https://p3m.dev/cran/latest                     |     24 |
+| https://cloud.r-project.org/                    |      4 |
+| https://p3m.dev/cran/**linux**/jammy/2024-03-31 |      2 |
+| https://p3m.dev/cran/**linux**/jammy/latest     |      4 |
+| https://p3m.dev/cran/latest                     |      4 |
 
 Using install.packages()
 

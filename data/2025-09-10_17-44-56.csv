@@ -1,0 +1,7 @@
+"r_pkg","use_pak","cran","installed_version","installed_from","installed_repository","install_time","image","r_version","system","architecture","timestamp"
+"data.table","FALSE","https://p3m.dev/cran/__linux__/jammy/latest","1.17.8","source","RSPM","18.899","rocker/r-ver:4.4.0","4.4.0","aarch64, linux-gnu","aarch64","2025-09-10 17:42:44.803025"
+"data.table","TRUE","https://p3m.dev/cran/__linux__/jammy/latest","1.17.8","binary","RSPM","7.391","rocker/r-ver:latest","4.5.1","x86_64, linux-gnu","x86_64","2025-09-10 17:43:08.412033"
+"data.table","FALSE","https://p3m.dev/cran/__linux__/jammy/latest","1.17.8","source","RSPM","21.111","rocker/r-ver:latest","4.5.1","x86_64, linux-gnu","x86_64","2025-09-10 17:42:37.93731"
+"data.table","FALSE","https://p3m.dev/cran/__linux__/jammy/latest","1.17.8","source","RSPM","19.895","rocker/r-ver:4.4.0","4.4.0","x86_64, linux-gnu","x86_64","2025-09-10 17:42:37.047369"
+"data.table","FALSE","https://p3m.dev/cran/__linux__/jammy/latest","1.17.8","source","RSPM","20.651","rocker/r-ver:latest","4.5.1","aarch64, linux-gnu","aarch64","2025-09-10 17:42:47.894146"
+"data.table","TRUE","https://p3m.dev/cran/__linux__/jammy/latest","1.17.8","binary","RSPM","7.852","rocker/r-ver:4.4.0","4.4.0","x86_64, linux-gnu","x86_64","2025-09-10 17:42:37.954092"
