@@ -130,6 +130,6 @@ jobs:
           mv *.csv data/
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add README_files/* data/*.csv || echo "Nothing to add"
+          git add README.md README_files/* data/*.csv || echo "Nothing to add"
           git commit -m "Add package installation summary" || echo "Nothing to commit"
           git push || echo "Nothing to push"

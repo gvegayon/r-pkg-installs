@@ -6,11 +6,29 @@ verbose <- Sys.getenv("_VERBOSE", "no")
 
 # Checking if we need to setup the proper CRAN repo
 # for latest binaries on Linux
-if (grepl("__linux__/jammy/latest", cran) && R.version$os ) {
+if (grepl("__linux__/jammy/latest", cran)) {
   options(
     repos = c(
       CRAN = sprintf(
         "https://p3m.dev/cran/latest/bin/linux/jammy-%s/%s",
+        R.version["arch"],
+        substr(getRversion(), 1, 3)
+      )
+    )
+  )
+} else if (grepl("__linux__/jammy/[0-9]{4}")) {
+
+  # Getting the date
+  cran_date <- gsub(
+    "https://p3m.dev/cran/__linux__/jammy/", "",
+    cran
+  )
+
+  options(
+    repos = c(
+      CRAN = sprintf(
+        "https://p3m.dev/cran/%s/bin/linux/jammy-%s/%s",
+        cran_date,
         R.version["arch"],
         substr(getRversion(), 1, 3)
       )
