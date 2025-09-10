@@ -105,7 +105,7 @@ message("Repository: ", installed_info$Repository)
 fn <- tempfile(fileext = ".yaml")
 
 # Checking the installation type
-if (use_pak) {
+if (use_pak == "yes") {
   installation_type <- ifelse(
       any(
         grepl(
