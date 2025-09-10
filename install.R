@@ -79,7 +79,7 @@ if (use_pak == "yes") {
 
     # In linux, we need some extra system dependencies
     if (R.version$os == "linux-gnu") {
-      stop("pak installation is only supported on Linux")
+      
       eval_with_cran({
         system("
           apt-get update && apt-get install -y --no-install-recommends libcurl4-openssl-dev
@@ -87,12 +87,13 @@ if (use_pak == "yes") {
           intern = TRUE
         )
       })
+      
     }
 
     eval_with_cran(system("install2.r pak", intern = TRUE))
 
   }
-  
+
   install_time <- system.time({
     install_output <- eval_with_cran({
       pak::pkg_install(r_pkg)
