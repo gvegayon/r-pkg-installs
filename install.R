@@ -3,18 +3,15 @@ use_pak <- Sys.getenv("_USE_PAK", "no")
 cran    <- Sys.getenv("_CRAN", "https://cloud.r-project.org/")
 r_pkg   <- Sys.getenv("_R_PKG", "")
 verbose <- Sys.getenv("_VERBOSE", "no")
+job_link <- Sys.getenv("_JOB_LINK", "")
 
 # Checking if we need to setup the proper CRAN repo
 # for latest binaries on Linux
 if (grepl("__linux__/jammy/latest", cran)) {
-  options(
-    repos = c(
-      CRAN = sprintf(
-        "https://p3m.dev/cran/latest/bin/linux/jammy-%s/%s",
-        R.version["arch"],
-        substr(getRversion(), 1, 3)
-      )
-    )
+  cran <- sprintf(
+    "https://p3m.dev/cran/latest/bin/linux/jammy-%s/%s",
+    R.version["arch"],
+    substr(getRversion(), 1, 3)
   )
 } else if (grepl("__linux__/jammy/[0-9]{4}")) {
 
@@ -24,16 +21,13 @@ if (grepl("__linux__/jammy/latest", cran)) {
     cran
   )
 
-  options(
-    repos = c(
-      CRAN = sprintf(
-        "https://p3m.dev/cran/%s/bin/linux/jammy-%s/%s",
-        cran_date,
-        R.version["arch"],
-        substr(getRversion(), 1, 3)
-      )
-    )
+  cran <- sprintf(
+    "https://p3m.dev/cran/%s/bin/linux/jammy-%s/%s",
+    cran_date,
+    R.version["arch"],
+    substr(getRversion(), 1, 3)
   )
+  
 }
 
 if (r_pkg == "") {
@@ -151,7 +145,8 @@ writeLines(
     sprintf("r_version: %s", getRversion()),
     sprintf("system: %s", R.version$system),
     sprintf("architecture: %s", R.version$arch),
-    sprintf("timestamp: %s", Sys.time())
+    sprintf("timestamp: %s", Sys.time()),
+    sprintf("job_link: %s", job_link)
   ),
   con = fn
 )

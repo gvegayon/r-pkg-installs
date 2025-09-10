@@ -41,6 +41,7 @@ jobs:
         _CRAN: ${{ matrix.cran.url }}
         _R_PKG: data.table
         _VERBOSE: yes
+        _JOB_LINK: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ github.job }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
