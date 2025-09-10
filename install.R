@@ -1,9 +1,9 @@
 # Getting whether to use pak or not
-use_pak <- Sys.getenv("_USE_PAK", "no")
-cran    <- Sys.getenv("_CRAN", "https://cloud.r-project.org/")
-r_pkg   <- Sys.getenv("_R_PKG", "")
-verbose <- Sys.getenv("_VERBOSE", "no")
-job_link <- Sys.getenv("_JOB_LINK", "")
+use_pak  <- Sys.getenv("_USE_PAK", "no")
+cran     <- Sys.getenv("_CRAN", "https://cloud.r-project.org/")
+r_pkg    <- Sys.getenv("_R_PKG", "")
+verbose  <- Sys.getenv("_VERBOSE", "no")
+run_link <- Sys.getenv("_RUN_LINK", "")
 
 # Checking if we need to setup the proper CRAN repo
 # for latest binaries on Linux
@@ -146,7 +146,7 @@ writeLines(
     sprintf("system: %s", R.version$system),
     sprintf("architecture: %s", R.version$arch),
     sprintf("timestamp: %s", Sys.time()),
-    sprintf("job_link: %s", job_link)
+    sprintf("run_link: %s", run_link)
   ),
   con = fn
 )
