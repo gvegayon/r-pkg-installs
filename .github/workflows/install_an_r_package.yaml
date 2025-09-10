@@ -27,6 +27,7 @@ jobs:
             ]
         R-version: ['4.4.0', 'latest'] # ['4.4.0', 'latest', '4.5.0']
         use_pak: [yes, no]
+        R-pkg: [data.table]
         cran: 
           - {label: cloud, url: https://cloud.r-project.org/}
           - {label: p3m-linux-latest, url: https://p3m.dev/cran/__linux__/jammy/latest}
@@ -39,7 +40,7 @@ jobs:
         _USE_PAK: ${{ matrix.use_pak }}
         _IMAGE: rocker/r-ver:${{ matrix.R-version }}
         _CRAN: ${{ matrix.cran.url }}
-        _R_PKG: data.table
+        _R_PKG: ${{ matrix.R-pkg }}
         _VERBOSE: yes
         _RUN_LINK: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:

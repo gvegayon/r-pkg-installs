@@ -13,35 +13,33 @@ and saves the output as csv files under [data](./data).
 
 ## Preliminary analysis
 
-The following table shows the distribution of the installations so far:
+As of 2025-09-10, the following tables show the distribution of the
+successful installations by method and source of the installed package
+(total: 126 successful installations vs 6 failed installations):
 
-|                                                             |  NA | source |
-|:------------------------------------------------------------|----:|-------:|
-| https://cloud.r-project.org/                                |   0 |     16 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |   0 |      4 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.5 |   1 |      0 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |   0 |      4 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.5  |   1 |      0 |
-| https://p3m.dev/cran/latest                                 |   0 |     16 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |   0 |      4 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |   0 |      4 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |   0 |      4 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |   0 |      4 |
+|                                                             | source |
+|:------------------------------------------------------------|-------:|
+| https://cloud.r-project.org/                                |     16 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      4 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      4 |
+| https://p3m.dev/cran/latest                                 |     16 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      4 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      4 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      4 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      4 |
 
 Using pak::pkg_install()
 
-|  | binary | NA | source |
-|:---|---:|---:|---:|
-| https://cloud.r-project.org/ | 0 | 0 | 20 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 | 0 | 0 | 5 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.5 | 0 | 2 | 0 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4 | 5 | 0 | 0 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.5 | 0 | 2 | 0 |
-| https://p3m.dev/cran/latest | 0 | 0 | 20 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4 | 0 | 0 | 5 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5 | 0 | 0 | 5 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4 | 5 | 0 | 0 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5 | 5 | 0 | 0 |
+|                                                             | binary | source |
+|:------------------------------------------------------------|-------:|-------:|
+| https://cloud.r-project.org/                                |      0 |     20 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      0 |      5 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      5 |      0 |
+| https://p3m.dev/cran/latest                                 |      0 |     20 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      0 |      5 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      0 |      5 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      5 |      0 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      5 |      0 |
 
 Using install.packages()
 
@@ -67,7 +65,8 @@ Looking at using source vs binary installation:
 2.  Try to install the `data.table` package (needs compilation).
 3.  Print the installation output. Using that, check whether a source or
     a binary version was installed (check the regex
-    `installing [*]source[*]`)
+    `installing [*]source[*]` if it is `install.packages` or
+    `Building {}` if it is `pak::pkg_install`).
 4.  Record the installation time and any relevant system information.
     The filename is a hash of the file itself.
 5.  The output is stored as an artifact. Once all jobs are complete, the
