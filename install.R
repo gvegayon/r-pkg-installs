@@ -4,6 +4,20 @@ cran    <- Sys.getenv("_CRAN", "https://cloud.r-project.org/")
 r_pkg   <- Sys.getenv("_R_PKG", "")
 verbose <- Sys.getenv("_VERBOSE", "no")
 
+# Checking if we need to setup the proper CRAN repo
+# for latest binaries on Linux
+if (grep("__linux__/jammy/latest", cran) && R.version$os ) {
+  options(
+    repos = c(
+      CRAN = sprintf(
+        "https://p3m.dev/cran/latest/bin/linux/jammy-%s/%s",
+        R.version["arch"],
+        substr(getRversion(), 1, 3)
+      )
+    )
+  )
+}
+
 if (r_pkg == "") {
   stop(
     "Please set the _R_PKG environment variable to the package ",
@@ -90,15 +104,29 @@ message("Repository: ", installed_info$Repository)
 # Creating a list to be saved as a yaml file
 fn <- tempfile(fileext = ".yaml")
 
+# Checking the installation type
+if (use_pak) {
+  installation_type <- ifelse(
+      any(
+        grepl(
+          paste("^.\\s+Building", r_pkg), install_output)
+      ),
+      "source",
+      "binary"
+    )
+} else {
+  installation_type <- ifelse(
+      any(grepl("installing [*]source[*]", install_output)), "source", "binary"
+    )
+}
+
 writeLines(
   c(
     sprintf("r_pkg: %s", r_pkg),
     sprintf("use_pak: %s", use_pak),
     sprintf("cran: %s", getOption("repos")["CRAN"]),
     sprintf("installed_version: %s", installed_info$Version),
-    sprintf("installed_from: %s", ifelse(
-      any(grepl("installing [*]source[*]", install_output)), "source", "binary"
-    )),
+    sprintf("installed_from: %s", installation_type),
     sprintf("installed_repository: %s", installed_info$Repository),
     sprintf("install_time: %s", install_time["elapsed"]),
     sprintf("image: %s", Sys.getenv("_IMAGE", "")),

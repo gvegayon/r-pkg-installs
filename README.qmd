@@ -25,6 +25,27 @@ installation_data <- lapply(fns, fread) |>
 installation_data[, method := ifelse(
   use_pak, "pak::pkg_install()", "install.packages()"
   )]
+
+# Combining fields
+installation_data[, pak_source := sprintf(
+  "%s (%s)",
+  ifelse(use_pak, "pak::pkg_install()", "install.packages()"),
+  installed_from
+)]
+```
+
+The following table shows the distribution of the installations so far:
+
+```{r}
+#| label: summary-table
+#| echo: false
+#| message: false
+#| warning: false
+tab_pak <- installation_data[use_pak == TRUE, table(cran, installed_from)]
+tab_no_pak <- installation_data[use_pak == FALSE, table(cran, installed_from)]
+
+knitr::kable(tab_pak, caption = "Using pak::pkg_install()")
+knitr::kable(tab_no_pak, caption = "Using install.packages()")
 ```
 
 The following figure shows the installation times (in seconds) for the `data.table` package using different methods and CRAN versions. Overall, `pak` seems to be faster when `option("repos")["CRAN"]` points to the specific OS architecture of the system (e.g., `__linux__/jammy`). When installing form source, `install.packages()` seems faster:
@@ -60,12 +81,12 @@ Looking at using source vs binary installation:
 #| message: false
 #| warning: false
 ggplot(installation_data, aes(x = install_time)) +
-  geom_histogram(aes(fill = installed_from), position = "dodge") +
+  geom_histogram(aes(fill = pak_source), position = "dodge") +
   theme_minimal() +
   labs(
     x = "Package",
     y = "Time (seconds)",
-    fill = "Binary Installation",
+    fill = "Installation type",
     caption = sprintf(
       "Data as of %s, including %d installations",
       Sys.Date(),

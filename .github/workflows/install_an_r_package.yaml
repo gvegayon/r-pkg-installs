@@ -15,7 +15,7 @@ permissions:
 
 jobs:
 
-  install_coda:
+  install_package:
     strategy:
       fail-fast: false
       matrix:
@@ -26,12 +26,12 @@ jobs:
             # macos-13, macos-15
             ]
         R-version: ['4.4.0', 'latest'] # ['4.4.0', 'latest', '4.5.0']
+        use_pak: [yes, no]
         cran: 
           - {label: cloud, url: https://cloud.r-project.org/}
           - {label: p3m-linux-latest, url: https://p3m.dev/cran/__linux__/jammy/latest}
           - {label: p3m-linux-source, url: https://p3m.dev/cran/latest}
           - {label: p3m-linux-old, url: https://p3m.dev/cran/__linux__/jammy/2024-03-31}
-        use_pak: [yes, no]
 
     runs-on: ${{ matrix.os }}
     container: rocker/r-ver:${{ matrix.R-version }}
@@ -49,7 +49,7 @@ jobs:
         if: ${{ startsWith( matrix.os, 'macos' ) }}
         uses: docker/setup-docker-action@v4.3.0
 
-      - name: Installing coda
+      - name: Installing the package
         shell: bash
         run: |
           Rscript -e 'source("install.R")'
@@ -59,12 +59,12 @@ jobs:
         with:
           path: |
               *yaml
-          name: coda-install-${{ matrix.R-version }}-${{ matrix.os }}-${{ matrix.cran.label }}-${{ matrix.use_pak }}
+          name: pak=${{ matrix.use_pak }}_R=${{ matrix.R-version }}_${{ matrix.os }}_lab=${{ matrix.cran.label }}
     
   combine:
     runs-on: ubuntu-latest
     container: rocker/tidyverse:4.5.0
-    needs: install_coda
+    needs: install_package
     if: success() || failure()
     steps:
 
@@ -131,5 +131,5 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add README_files/* data/*.csv || echo "Nothing to add"
-          git commit -m "Add coda installation summary" || echo "Nothing to commit"
+          git commit -m "Add package installation summary" || echo "Nothing to commit"
           git push || echo "Nothing to push"

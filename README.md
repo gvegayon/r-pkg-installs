@@ -13,6 +13,26 @@ and saves the output as csv files under [data](./data).
 
 ## Preliminary analysis
 
+The following table shows the distribution of the installations so far:
+
+|                                                 | binary |
+|:------------------------------------------------|-------:|
+| https://cloud.r-project.org/                    |     24 |
+| https://p3m.dev/cran/**linux**/jammy/2024-03-31 |      6 |
+| https://p3m.dev/cran/**linux**/jammy/latest     |     12 |
+| https://p3m.dev/cran/latest                     |     24 |
+
+Using pak::pkg_install()
+
+|                                                 | source |
+|:------------------------------------------------|-------:|
+| https://cloud.r-project.org/                    |     24 |
+| https://p3m.dev/cran/**linux**/jammy/2024-03-31 |     12 |
+| https://p3m.dev/cran/**linux**/jammy/latest     |     24 |
+| https://p3m.dev/cran/latest                     |     24 |
+
+Using install.packages()
+
 The following figure shows the installation times (in seconds) for the
 `data.table` package using different methods and CRAN versions. Overall,
 `pak` seems to be faster when `option("repos")["CRAN"]` points to the
