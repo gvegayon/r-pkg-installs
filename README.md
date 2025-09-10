@@ -15,39 +15,39 @@ and saves the output as csv files under [data](./data).
 
 As of 2025-09-10, the following tables show the distribution of the
 successful installations by method and source of the installed package
-(total: 126 successful installations vs 6 failed installations):
+(total: 154 successful installations vs 10 failed installations):
 
 |                                                             | source |
 |:------------------------------------------------------------|-------:|
-| https://cloud.r-project.org/                                |     16 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      4 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      4 |
-| https://p3m.dev/cran/latest                                 |     16 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      4 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      4 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      4 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      4 |
+| https://cloud.r-project.org/                                |     20 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      5 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      5 |
+| https://p3m.dev/cran/latest                                 |     20 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      5 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      5 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      5 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      5 |
 
 Using pak::pkg_install()
 
 |                                                             | binary | source |
 |:------------------------------------------------------------|-------:|-------:|
-| https://cloud.r-project.org/                                |      0 |     20 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      0 |      5 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      5 |      0 |
-| https://p3m.dev/cran/latest                                 |      0 |     20 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      0 |      5 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      0 |      5 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      5 |      0 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      5 |      0 |
+| https://cloud.r-project.org/                                |      0 |     24 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      0 |      6 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      6 |      0 |
+| https://p3m.dev/cran/latest                                 |      0 |     24 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      0 |      6 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      0 |      6 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      6 |      0 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      6 |      0 |
 
 Using install.packages()
 
 The following figure shows the installation times (in seconds) for the
-`data.table` package using different methods and CRAN versions. Overall,
-`pak` seems to be faster when `option("repos")["CRAN"]` points to the
-specific OS architecture of the system (e.g., `__linux__/jammy`). When
-installing form source, `install.packages()` seems faster:
+`data.table` package using different methods and CRAN versions. So far,
+`pak` is only using source for installations, even when the CRAN
+repository is set to the specific OS architecture (e.g.,
+`__linux__/jammy`):
 
 ![Installation times (in seconds) for the `data.table` package using
 different methods and CRAN
@@ -75,10 +75,15 @@ Looking at using source vs binary installation:
 
 ## Random observations
 
-- The posit public package manager (p3m) seems to contain multiple
-  snapshot versions of compiled packages. As of September 3, 2025, the
-  latest 8 versions of data.table (from 1.16.0 in October 10, 2024 up to
-  1.17.8 in July 10, 2025) are available as binaries for Mac OS arm64
-  chips. Nonetheless, running the same installer in the
-  `rocker/r-ver:4.5.1` container results in a different behavior, always
-  installing the source version of the package.
+- \[2025-09-10 gvegayon\] `pak` does not seem to be working as expected.
+  All instalations using the `pak` package in the `rocker/r-ver`
+  containers have been from source, even when the CRAN repository is set
+  to the specific OS architecture (e.g., `__linux__/jammy`).
+
+- \[2025-09-03 gvegayon\] The posit public package manager (p3m) seems
+  to contain multiple snapshot versions of compiled packages. As of
+  September 3, 2025, the latest 8 versions of data.table (from 1.16.0 in
+  October 10, 2024 up to 1.17.8 in July 10, 2025) are available as
+  binaries for Mac OS arm64 chips. Nonetheless, running the same
+  installer in the `rocker/r-ver:4.5.1` container results in a different
+  behavior, always installing the source version of the package.
