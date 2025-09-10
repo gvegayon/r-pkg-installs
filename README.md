@@ -28,16 +28,18 @@ The following table shows the distribution of the installations so far:
 
 Using pak::pkg_install()
 
-|                                                             | binary | source |
-|:------------------------------------------------------------|-------:|-------:|
-| https://cloud.r-project.org/                                |      0 |     12 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      0 |      3 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      3 |      0 |
-| https://p3m.dev/cran/latest                                 |      0 |     12 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      0 |      3 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      0 |      3 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      3 |      0 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      3 |      0 |
+|  | binary | NA | source |
+|:---|---:|---:|---:|
+| https://cloud.r-project.org/ | 0 | 0 | 16 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 | 0 | 0 | 4 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.5 | 0 | 1 | 0 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4 | 4 | 0 | 0 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.5 | 0 | 1 | 0 |
+| https://p3m.dev/cran/latest | 0 | 0 | 16 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4 | 0 | 0 | 4 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5 | 0 | 0 | 4 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4 | 4 | 0 | 0 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5 | 4 | 0 | 0 |
 
 Using install.packages()
 
