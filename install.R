@@ -97,8 +97,12 @@ if (use_pak == "yes") {
 }
 
 if (verbose != "no") {
+  message("------------------------------------------------------------")
   message("------------------ Installation output ----------------------")
+  message("------------------------------------------------------------")
   message(paste(install_output, collapse = "\n"))
+  message("------------------------------------------------------------")
+  message("------------------------------------------------------------")
 }
 
 message("Total install time: ", install_time["elapsed"], " seconds.")
@@ -108,10 +112,6 @@ message("Total install time: ", install_time["elapsed"], " seconds.")
 # - Whether it was installed from source or from binaries
 # - What is the repository from which it was installed
 installed_info <- packageDescription(r_pkg)
-
-message("Installed version: ", installed_info$Version)
-message("Installed from: ", ifelse(installed_info$Built == "", "source", "binary"))
-message("Repository: ", installed_info$Repository)
 
 # Creating a list to be saved as a yaml file
 fn <- tempfile(fileext = ".yaml")
@@ -131,6 +131,10 @@ if (use_pak == "yes") {
       any(grepl("installing [*]source[*]", install_output)), "source", "binary"
     )
 }
+
+message("Installed version: ", installed_info$Version)
+message("Installed from: ", installation_type)
+message("Repository: ", installed_info$Repository)
 
 writeLines(
   c(
@@ -157,3 +161,7 @@ file.copy(
     paste0(tools::md5sum(fn), ".yaml")
 )
 
+# Printing out the information
+readLines(fn) |> 
+  paste(collapse = "\n") |>
+  message()
