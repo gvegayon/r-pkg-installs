@@ -6,7 +6,7 @@ verbose <- Sys.getenv("_VERBOSE", "no")
 
 # Checking if we need to setup the proper CRAN repo
 # for latest binaries on Linux
-if (grep("__linux__/jammy/latest", cran) && R.version$os ) {
+if (grepl("__linux__/jammy/latest", cran) && R.version$os ) {
   options(
     repos = c(
       CRAN = sprintf(
