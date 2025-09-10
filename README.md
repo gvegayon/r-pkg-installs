@@ -17,27 +17,27 @@ The following table shows the distribution of the installations so far:
 
 |                                                             | source |
 |:------------------------------------------------------------|-------:|
-| https://cloud.r-project.org/                                |      8 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      2 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      2 |
-| https://p3m.dev/cran/latest                                 |      8 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      2 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      2 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      2 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      2 |
+| https://cloud.r-project.org/                                |     12 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      3 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      3 |
+| https://p3m.dev/cran/latest                                 |     12 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      3 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      3 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      3 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      3 |
 
 Using pak::pkg_install()
 
 |                                                             | binary | source |
 |:------------------------------------------------------------|-------:|-------:|
-| https://cloud.r-project.org/                                |      0 |      8 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      0 |      2 |
-| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      2 |      0 |
-| https://p3m.dev/cran/latest                                 |      0 |      8 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      0 |      2 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      0 |      2 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      2 |      0 |
-| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      2 |      0 |
+| https://cloud.r-project.org/                                |      0 |     12 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-aarch64/4.4 |      0 |      3 |
+| https://p3m.dev/cran/2024-03-31/bin/linux/jammy-x86_64/4.4  |      3 |      0 |
+| https://p3m.dev/cran/latest                                 |      0 |     12 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.4     |      0 |      3 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-aarch64/4.5     |      0 |      3 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.4      |      3 |      0 |
+| https://p3m.dev/cran/latest/bin/linux/jammy-x86_64/4.5      |      3 |      0 |
 
 Using install.packages()
 
