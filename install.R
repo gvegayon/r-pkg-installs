@@ -13,7 +13,7 @@ if (grepl("__linux__/jammy/latest", cran)) {
     R.version["arch"],
     substr(getRversion(), 1, 3)
   )
-} else if (grepl("__linux__/jammy/[0-9]{4}")) {
+} else if (grepl("__linux__/jammy/[0-9]{4}", cran)) {
 
   # Getting the date
   cran_date <- gsub(
