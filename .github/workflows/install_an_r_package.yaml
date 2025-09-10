@@ -63,7 +63,7 @@ jobs:
     
   combine:
     runs-on: ubuntu-latest
-    container: rocker/r-ver:latest
+    container: rocker/tidyverse:4.5.0
     needs: install_coda
     if: success() || failure()
     steps:
@@ -79,7 +79,7 @@ jobs:
 
       - name: Dependencies
         run: |
-          install2.r --error yaml
+          install2.r --error yaml data.table
 
       - name: Combine all YAML files
         shell: Rscript {0}
@@ -97,6 +97,10 @@ jobs:
           fn <- paste0(fn, ".csv")
 
           write.csv(out, file = fn, row.names = FALSE)
+
+      - name: Updating README
+        run: |
+          quarto render README.qmd --to gfm
     
       - name: Upload artifact
         uses: actions/upload-artifact@v4.6.2
@@ -104,6 +108,8 @@ jobs:
           name: install-file
           path: |
             *.csv
+            README.md
+            README_files/*
 
   commit:
     runs-on: ubuntu-latest
@@ -123,6 +129,6 @@ jobs:
           mv *.csv data/
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add data/*.csv || echo "Nothing to add"
+          git add README_files/* data/*.csv || echo "Nothing to add"
           git commit -m "Add coda installation summary" || echo "Nothing to commit"
           git push || echo "Nothing to push"
