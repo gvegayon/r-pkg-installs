@@ -113,47 +113,76 @@ message("Total install time: ", install_time["elapsed"], " seconds.")
 # - What is the repository from which it was installed
 installed_info <- packageDescription(r_pkg)
 
+# When packageDescription cannot find the package, it returns an
+# NA logical of length 1.
+pkg_installed <- (length(installed_info) > 1L)
+
 # Creating a list to be saved as a yaml file
 fn <- tempfile(fileext = ".yaml")
 
 # Checking the installation type
-if (use_pak == "yes") {
-  installation_type <- ifelse(
-      any(
-        grepl(
-          paste("Building", r_pkg), install_output)
-      ),
-      "source",
-      "binary"
-    )
+if (!pkg_installed) {
+
+  message("Failed to install the package (package not found).")
+
+  writeLines(
+    c(
+      sprintf("r_pkg: %s", r_pkg),
+      sprintf("use_pak: %s", use_pak),
+      sprintf("cran: %s", getOption("repos")["CRAN"]),
+      sprintf("installed_version: %s", ""),
+      sprintf("installed_from: %s", ""),
+      sprintf("installed_repository: %s", ""),
+      sprintf("install_time: %s", install_time["elapsed"]),
+      sprintf("image: %s", Sys.getenv("_IMAGE", "")),
+      sprintf("r_version: %s", getRversion()),
+      sprintf("system: %s", R.version$system),
+      sprintf("architecture: %s", R.version$arch),
+      sprintf("timestamp: %s", Sys.time()),
+      sprintf("run_link: %s", run_link)
+    ),
+    con = fn
+  )
+
 } else {
-  installation_type <- ifelse(
-      any(grepl("installing [*]source[*]", install_output)), "source", "binary"
-    )
+  if (use_pak == "yes") {
+    installation_type <- ifelse(
+        any(
+          grepl(
+            paste("Building", r_pkg), install_output)
+        ),
+        "source",
+        "binary"
+      )
+  } else {
+    installation_type <- ifelse(
+        any(grepl("installing [*]source[*]", install_output)), "source", "binary"
+      )
+  }
+
+  message("Installed version: ", installed_info$Version)
+  message("Installed from: ", installation_type)
+  message("Repository: ", installed_info$Repository)
+
+  writeLines(
+    c(
+      sprintf("r_pkg: %s", r_pkg),
+      sprintf("use_pak: %s", use_pak),
+      sprintf("cran: %s", getOption("repos")["CRAN"]),
+      sprintf("installed_version: %s", installed_info$Version),
+      sprintf("installed_from: %s", installation_type),
+      sprintf("installed_repository: %s", installed_info$Repository),
+      sprintf("install_time: %s", install_time["elapsed"]),
+      sprintf("image: %s", Sys.getenv("_IMAGE", "")),
+      sprintf("r_version: %s", getRversion()),
+      sprintf("system: %s", R.version$system),
+      sprintf("architecture: %s", R.version$arch),
+      sprintf("timestamp: %s", Sys.time()),
+      sprintf("run_link: %s", run_link)
+    ),
+    con = fn
+  )
 }
-
-message("Installed version: ", installed_info$Version)
-message("Installed from: ", installation_type)
-message("Repository: ", installed_info$Repository)
-
-writeLines(
-  c(
-    sprintf("r_pkg: %s", r_pkg),
-    sprintf("use_pak: %s", use_pak),
-    sprintf("cran: %s", getOption("repos")["CRAN"]),
-    sprintf("installed_version: %s", installed_info$Version),
-    sprintf("installed_from: %s", installation_type),
-    sprintf("installed_repository: %s", installed_info$Repository),
-    sprintf("install_time: %s", install_time["elapsed"]),
-    sprintf("image: %s", Sys.getenv("_IMAGE", "")),
-    sprintf("r_version: %s", getRversion()),
-    sprintf("system: %s", R.version$system),
-    sprintf("architecture: %s", R.version$arch),
-    sprintf("timestamp: %s", Sys.time()),
-    sprintf("run_link: %s", run_link)
-  ),
-  con = fn
-)
 
 file.copy(
   from = fn, 
@@ -162,6 +191,7 @@ file.copy(
 )
 
 # Printing out the information
+message("\n------------------ Data summary ----------------------")
 readLines(fn) |> 
   paste(collapse = "\n") |>
   message()
